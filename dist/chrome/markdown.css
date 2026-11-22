@@ -1,0 +1,14 @@
+.answer-markdown { overflow-wrap: anywhere; }
+.answer-markdown p { white-space: normal; margin: .45em 0; }
+.answer-markdown :is(h3,h4,h5,h6) { font-size: 1em; margin: .65em 0 .2em; }
+.answer-markdown :is(ul,ol) { padding-inline-start: 1.5em; margin: .4em 0; }
+.answer-markdown pre { padding: .65em; background: var(--okusta-code); border: 1px solid var(--okusta-soft-rule); font: 12px/1.55 ui-monospace, monospace; white-space: pre; overflow: auto; max-width: 100%; }
+.answer-markdown .table-scroll { overflow-x: auto; }
+.answer-markdown table { border-collapse: collapse; }
+.answer-markdown :is(th,td) { padding: .25em .5em; border: 1px solid var(--okusta-soft-rule); }
+.answer-markdown > :first-child { margin-top: 0; }
+.answer-markdown > :last-child { margin-bottom: 0; }
+.answer-markdown a { color: var(--okusta-link); text-underline-offset: .15em; }
+.answer-markdown a:is(:hover, :focus-visible) { color: var(--okusta-link-hover); }
+.answer-markdown :not(pre) > code { background: var(--okusta-code); color: var(--okusta-ink); padding: .05em .2em; }
+.answer-markdown blockquote { margin: .5em 0; padding-inline-start: .75em; border-inline-start: 2px solid var(--okusta-accent-rule); font: inherit; white-space: normal; }

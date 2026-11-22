@@ -1,0 +1,75 @@
+/* The panel defines its own palette inside the shadow root. */
+:root, .window, .source-marker {
+  --okusta-scheme: light;
+  --okusta-ink: #151515;
+  --okusta-desktop: #f7f7f5;
+  --okusta-frame: #deded8;
+  --okusta-outline: #3e3e3c;
+  --okusta-stripe-shadow: #868681;
+  --okusta-stripe-light: #fbfbf9;
+  --okusta-stripe-mid: #cdcdc8;
+  --okusta-paper: #ffffff;
+  --okusta-sidebar: #f3f3ef;
+  --okusta-drawer: #efefe9;
+  --okusta-button: #f7f7f5;
+  --okusta-control: #ffffff;
+  --okusta-note: #f7f7f5;
+  --okusta-rule: #a9a9a2;
+  --okusta-soft-rule: #d8d8d2;
+  --okusta-accent-rule: #b8b8b1;
+  --okusta-note-rule: #c15260;
+  --okusta-title-ink: var(--okusta-ink);
+  --okusta-tool-ink: #454541;
+  --okusta-muted: #5f5f5f;
+  --okusta-link: #c15260;
+  --okusta-link-hover: #14998b;
+  --okusta-selection: rgba(193,82,96,.18);
+  --okusta-selected: #a34451;
+  --okusta-hover: #efefe9;
+  --okusta-pressed: #deded8;
+  --okusta-disabled: #8b8b85;
+  --okusta-focus: #a34451;
+  --okusta-code: #efefe9;
+  --okusta-error: #842e29;
+  --okusta-bevel: #ffffff;
+  --okusta-scroll-thumb: #aaa9a3;
+  --okusta-scroll-track: #efefe9;
+}
+:root[data-theme="dark"], .window[data-theme="dark"], .source-marker[data-theme="dark"] {
+  --okusta-scheme: dark;
+  --okusta-ink: #f3f3f0;
+  --okusta-desktop: #141414;
+  --okusta-frame: #303030;
+  --okusta-outline: #101010;
+  --okusta-stripe-shadow: #202020;
+  --okusta-stripe-light: #797976;
+  --okusta-stripe-mid: #444443;
+  --okusta-paper: #171717;
+  --okusta-sidebar: #1b1b1b;
+  --okusta-drawer: #202020;
+  --okusta-button: #303030;
+  --okusta-control: #141414;
+  --okusta-note: #202020;
+  --okusta-rule: #515150;
+  --okusta-soft-rule: #303030;
+  --okusta-accent-rule: #5e5e5b;
+  --okusta-note-rule: #14998b;
+  --okusta-title-ink: var(--okusta-ink);
+  --okusta-tool-ink: #d8d8d2;
+  --okusta-muted: #b4b4ad;
+  --okusta-link: #14998b;
+  --okusta-link-hover: #c15260;
+  --okusta-selection: rgba(20,153,139,.22);
+  --okusta-selected: #196c63;
+  --okusta-hover: #303030;
+  --okusta-pressed: #393939;
+  --okusta-disabled: #757572;
+  --okusta-focus: #31b5a5;
+  --okusta-code: #202020;
+  --okusta-error: #ffaaa1;
+  --okusta-bevel: #686865;
+  --okusta-scroll-thumb: #666664;
+  --okusta-scroll-track: #202020;
+}
+
+::selection { background: var(--okusta-selection); color: var(--okusta-ink); }

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Okusta — Journal</title>
+  <link rel="icon" href="icons/okusta-32.png">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="titlebar.css">
+  <link rel="stylesheet" href="desk.css">
+  <link rel="stylesheet" href="markdown.css">
+  <script src="appearance.js"></script>
+  <script src="vendor/marked.js"></script>
+  <script src="markdown.js"></script>
+  <script src="reply-client.js"></script>
+  <script src="desk.js" type="module"></script>
+  <script src="settings.js" type="module"></script>
+</head>
+<body>
+  <main>
+    <header class="titlebar"><button class="close" id="close-journal" type="button" aria-label="Close journal tab" title="Close journal tab"></button><span class="crossbars" aria-hidden="true"></span><img src="icons/okusta-16.png" width="16" height="16" alt=""><h1>Okusta</h1><span class="crossbars" aria-hidden="true"></span><i id="model-dot" role="img" tabindex="0" aria-label="Checking model" title="Checking model"></i></header>
+    <div class="workspace">
+      <section class="drawer" aria-label="Settings">
+        <button id="toggle-settings" aria-expanded="false" aria-controls="settings-body" title="Settings">
+          <span aria-hidden="true">⚙</span><span class="drawer-label">Settings</span>
+        </button>
+        <div id="settings-body" hidden>
+          <fieldset><legend>Appearance</legend>
+            <label class="check"><input id="dark-mode" type="checkbox"> Dark mode</label>
+            <p id="appearance-status" role="status"></p>
+          </fieldset>
+          <fieldset><legend>Recording</legend>
+            <label class="check"><input id="autorecord" type="checkbox"> Autorecord</label>
+            <p>Save the panel conversation after each reply.</p>
+            <p id="record-status" role="status"></p>
+          </fieldset>
+          <fieldset><legend>Journal location</legend>
+            <p id="active-store"></p>
+            <label for="store-type">Save clippings and replies in</label>
+            <select id="store-type"><option value="profile">This browser profile</option><option value="sqlite">SQLite file</option></select>
+            <div id="sqlite-fields" hidden><label for="db-path">Database file</label>
+              <input id="db-path" placeholder="~/Documents/Okusta/journal.sqlite" spellcheck="false">
+            </div>
+            <label class="check" id="copy-label" hidden><input type="checkbox" id="copy-records" checked>Copy current entries when switching</label>
+            <label for="export-folder">Export folder</label>
+            <input id="export-folder" placeholder="Browser downloads" spellcheck="false">
+            <button id="save-store">Save location</button>
+            <div class="export-row"><button id="export-md">Export Markdown</button><button id="export-json">Export JSON</button></div>
+            <p id="store-result" role="status"></p>
+          </fieldset>
+          <fieldset><legend>Model connection</legend>
+            <p id="active-model"></p>
+            <label for="provider">Provider</label>
+            <select id="provider"><option value="local">Local model</option><option value="deepseek">DeepSeek</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option><option value="groq">Groq</option><option value="gemini">Gemini</option><option value="openrouter">OpenRouter</option></select>
+            <div id="qwen-fields"><label for="qwen-port">Server port on 127.0.0.1</label><input id="qwen-port" type="number" min="1" max="65535" value="8765"><label for="local-model">Served model ID</label><input id="local-model" placeholder="Auto-detect a single model" spellcheck="false"></div>
+            <div id="hosted-fields" hidden>
+              <label for="model-id">Model ID</label><input id="model-id" placeholder="From your provider account" spellcheck="false">
+              <p id="credential-hint"></p>
+              <p>The helper reads keys from its environment or <code>~/.config/okusta/keys.json</code>.</p>
+              <p>The test sends “Reply with OK” and may incur a charge. Continuing sends this entry’s conversation and any picked source to the selected provider.</p>
+            </div>
+            <button id="use-model">Test &amp; use model</button>
+            <button id="reset-model" hidden>Return to local model</button>
+            <p id="model-result" role="status"></p>
+          </fieldset>
+          <fieldset><legend>Collection adapter</legend>
+            <p id="active-adapter">Disconnected</p>
+            <label for="adapter-name">Served LoRA name</label><input id="adapter-name" value="collection" spellcheck="false">
+            <label for="adapter-port">vLLM port on 127.0.0.1</label><input id="adapter-port" type="number" min="1" max="65535" value="8765">
+            <button id="use-adapter">Test &amp; use adapter</button><button id="clear-adapter" hidden>Disconnect</button>
+            <p id="adapter-result" role="status"></p>
+          </fieldset>
+          <fieldset id="qwen-limits"><legend>Local model limits</legend>
+            <label for="note-tokens">Explanation output (tokens)</label>
+            <input id="note-tokens" type="number" min="1" step="1">
+            <label for="question-tokens">Question output (tokens)</label>
+            <input id="question-tokens" type="number" min="1" step="1">
+            <label for="context-tokens">Context window (input + output tokens)</label>
+            <input id="context-tokens" type="number" min="2" step="1">
+            <label for="gpu-gb">GPU memory budget (GB)</label>
+            <input id="gpu-gb" type="text" inputmode="decimal" placeholder="Automatic" aria-describedby="gpu-hint">
+            <p id="gpu-hint">Decimal GB, rounded down to 0.01 GB. Blank uses 75% of the GPU.</p>
+            <p>Output limits apply on the next run. Restart vLLM for context or memory changes.</p>
+            <button id="save-limits">Save limits</button>
+            <p id="limits-result" role="status"></p>
+            <details id="launch-details"><summary>Launch command</summary><pre id="launch-command"></pre></details>
+          </fieldset>
+          <fieldset><legend>Local helper</legend>
+            <p>For SQLite, custom export folders and hosted models, run <code>python scripts/desk-service.py</code>.</p>
+            <label for="pair-token">Pairing token from the terminal</label>
+            <input type="password" id="pair-token" autocomplete="off" spellcheck="false">
+            <button id="pair">Pair helper</button><button id="check-helper">Check connection</button>
+            <p id="helper-result" role="status"></p>
+          </fieldset>
+        </div>
+      </section>
+      <aside><div class="cabinet"><h2>Journal days</h2><button type="button" id="import-replay">Import replay…</button><input id="replay-file" hidden type="file" accept=".json,application/json"><nav aria-label="Journal days and entries" id="days"></nav></div></aside>
+      <section class="page" aria-label="Journal">
+        <details id="organizer">
+          <summary>Collections</summary>
+          <div id="saved-collections"></div>
+          <details id="organize-form"><summary>Organize selected clippings</summary>
+            <fieldset id="organize-inputs">
+              <legend>New collection</legend>
+              <label for="collection-name">Collection name</label>
+              <input id="collection-name" maxlength="100" autocomplete="off">
+              <label for="collection-goal">Which clippings belong here?</label>
+              <textarea id="collection-goal" rows="2" maxlength="600" placeholder="Keep clippings that report a measured retrieval result."></textarea>
+              <div id="collection-pick-label">Clippings (choose up to 12)</div>
+              <div id="collection-pick" role="group" aria-labelledby="collection-pick-label"></div>
+              <button type="button" id="organize-start">Organize clippings</button>
+            </fieldset>
+            <button type="button" id="organize-stop" hidden>Stop</button>
+            <p id="organize-status" role="status"></p>
+            <ol id="organize-trace" aria-label="Adapter actions"></ol>
+          </details>
+        </details>
+        <header class="paper-head" id="heading"><h2>Journal</h2></header>
+        <div id="empty" hidden>
+          <p>Open Okusta from the toolbar to start a query or pick an element.</p>
+          <img src="icons/okusta-128.png" width="128" height="128" alt="">
+        </div>
+        <div id="clips"></div>
+        <p id="status" role="status"></p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

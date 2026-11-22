@@ -1,0 +1,45 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<style>
+:root { font:14px/1.45 Tahoma,system-ui,sans-serif; color:#1d302a; background:#f4f2e9 }
+body { margin:12px 14px } button { padding:3px 12px; margin:0 4px 7px 0; font:inherit; border:1px solid #778278; background:#faf9f2; color:inherit; cursor:pointer }
+button[aria-pressed=true] { background:#344d42; color:white } output { display:block; min-height:1.5em; overflow-wrap:anywhere }
+#active::before { content:"Active tab   "; font-size:12px; color:#4e6355 } #out::before { content:"Content   "; font-size:12px; color:#4e6355 }
+output:empty::after { content:"(empty)"; color:#737c71; font-style:italic }
+</style>
+<button id="one">one</button><button id="two">two</button><button id="three">three</button><button id="close">Close</button><output id="active"></output><output id="out"></output>
+<script>const $ = s => document.querySelector(s);
+$('#one').onclick = async () => { $('#active').textContent = 'one'; $('#out').textContent = 'Notes 2'; };
+$('#two').onclick = async () => { $('#active').textContent = 'two'; $('#out').textContent = 'Details 2'; };
+$('#three').onclick = async () => { $('#active').textContent = 'three'; $('#out').textContent = 'Sources 2'; };
+$('#close').onclick = async () => { $('#active').textContent = ''; $('#out').textContent = ''; };</script>
+<script>// Only the parent that mounted this packaged page receives a command channel.
+window.addEventListener("message", function connect(event) {
+  if (event.source !== parent || event.data?.type !== "connect" || !event.ports[0]) return;
+  window.removeEventListener("message", connect);
+  const port = event.ports[0];
+  const active = document.querySelector("#active"), content = document.querySelector("#out");
+  const buttons = ["#one","#two","#three","#close"];
+  document.addEventListener("click", e => {
+    if (e.isTrusted) port.postMessage({type:"manual"});
+  }, true);
+  function reflect() {
+    for (const id of buttons.slice(0,3)) {
+      document.querySelector(id).setAttribute("aria-pressed", String(id.slice(1) === active.textContent));
+    }
+  }
+  document.addEventListener("click",reflect);
+  port.onmessage = ({data}) => {
+    try {
+      if (!Array.isArray(data.clicks) || data.clicks.length > 7 || data.clicks.some(s => !buttons.includes(s)) ||
+          ![null,"#active","#out"].includes(data.read)) throw Error();
+      for (const id of data.clicks) document.querySelector(id).click();
+      reflect();
+      const actual = data.read === null ? null : (data.read === "#active" ? active : content).textContent;
+      port.postMessage({type:"result",actual});
+    } catch { port.postMessage({type:"error"}); }
+  };
+  port.postMessage({type:"ready"});
+});
+</script>

@@ -1,0 +1,3 @@
+.titlebar { display: flex; align-items: center; gap: 7px; height: 24px; margin: 0 3px 3px; }
+.titlebar .crossbars { flex: 1; height: 13px; background: repeating-linear-gradient(to bottom,var(--okusta-stripe-shadow) 0 1px,var(--okusta-stripe-light) 1px 2px,var(--okusta-stripe-mid) 2px 3px); }
+.titlebar h1 { font-size: 14px; margin: 0; }

@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "Okusta",
+  "version": "0.90",
+  "description": "Keep a journal, capture screenshot regions or page elements, and discuss them with a local or hosted model.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*"
+  ],
+  "icons": {
+    "16": "icons/okusta-16.png",
+    "32": "icons/okusta-32.png",
+    "48": "icons/okusta-48.png",
+    "128": "icons/okusta-128.png"
+  },
+  "action": {
+    "default_title": "Open Okusta",
+    "default_icon": {
+      "16": "icons/okusta-16.png",
+      "32": "icons/okusta-32.png"
+    }
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+J"
+      },
+      "description": "Open the clipping window"
+    }
+  },
+  "options_ui": {
+    "page": "desk.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "sandbox": {
+    "pages": [
+      "replay/tabs.html"
+    ]
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'",
+    "sandbox": "sandbox allow-scripts; default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'"
+  }
+}

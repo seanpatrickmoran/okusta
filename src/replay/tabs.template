@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<style>
+:root { font:14px/1.45 Tahoma,system-ui,sans-serif; color:#1d302a; background:#f4f2e9 }
+body { margin:12px 14px } button { padding:3px 12px; margin:0 4px 7px 0; font:inherit; border:1px solid #778278; background:#faf9f2; color:inherit; cursor:pointer }
+button[aria-pressed=true] { background:#344d42; color:white } output { display:block; min-height:1.5em; overflow-wrap:anywhere }
+#active::before { content:"Active tab   "; font-size:12px; color:#4e6355 } #out::before { content:"Content   "; font-size:12px; color:#4e6355 }
+output:empty::after { content:"(empty)"; color:#737c71; font-style:italic }
+</style>
+<!-- FIXTURE -->
+<script>/* APP */</script>
+<script>/* BRIDGE */</script>

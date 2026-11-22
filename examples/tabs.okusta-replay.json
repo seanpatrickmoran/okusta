@@ -1,0 +1,46 @@
+{
+  "format": "okusta-replay/1",
+  "id": "25c86e817e1f5fc79166e23f30e856c9",
+  "title": "Close loses the selected tab",
+  "origin": {
+    "actor": "scripted",
+    "run": "authored-dom-smoke",
+    "episode": "tabs-close-001"
+  },
+  "start": "fresh",
+  "fixture": {
+    "runtime": "autoscript-sync-widget/1",
+    "sha256": "79d7efde2e2c224fb3aefe7476bff7e7100cd846518623a766dea52f2383eeb9"
+  },
+  "steps": [
+    {
+      "op": "click",
+      "selector": "#two"
+    },
+    {
+      "op": "click",
+      "selector": "#close"
+    },
+    {
+      "op": "assert",
+      "selector": "#active",
+      "property": "text",
+      "expected": "two"
+    }
+  ],
+  "pauseAfter": 1,
+  "verification": {
+    "kind": "counterexample",
+    "assertStep": 2,
+    "reference": {
+      "observed": true,
+      "actual": "two",
+      "passed": true
+    },
+    "candidate": {
+      "observed": true,
+      "actual": "",
+      "passed": false
+    }
+  }
+}
